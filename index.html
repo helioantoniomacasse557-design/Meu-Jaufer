@@ -49,7 +49,7 @@ nav{display:flex;gap:7px;overflow-x:auto;margin
 nav button{min-width:100px;font-size:13px}
 .item{padding:12px;border-bottom:1px solid #39475a}
 small{color:#aab5c5}
-.hidden{display:block}
+.hidden{display:none}
 footer{text-align:center;padding:25px;color:#8d9bb0;font-size:12px}
 </style>
 </head>
@@ -81,7 +81,7 @@ footer{text-align:center;padding:25px;color:#8d9bb0;font-size:12px}
 <button onclick="mostrar('vendas')">Vendas</button>
 <button onclick="mostrar('financas')">Finanças</button>
 </nav>
-<section id="tarefas" class="hidden">
+<section id="tarefas">
 <h2>Minhas tarefas</h2>
 <div class="card">
 <input id="novaTarefa" placeholder="Nova tarefa">
@@ -89,7 +89,7 @@ footer{text-align:center;padding:25px;color:#8d9bb0;font-size:12px}
 <div id="listaTarefas"></div>
 </div>
 </section>
-<section id="vendas" class="hidden">
+<section id="vendas" 
 <h2>Gestão de vendas</h2>
 <div class="card">
 <input id="produto" placeholder="Produto ou serviço">
@@ -98,7 +98,7 @@ footer{text-align:center;padding:25px;color:#8d9bb0;font-size:12px}
 <div id="listaVendas"></div>
 </div>
 </section>
-<section id="financas" class="hidden">
+<section id="financas" 
 <h2>Minhas finanças</h2>
 <div class="card">
 <input id="valorEntrada" type="number" placeholder="Receita em MT">
