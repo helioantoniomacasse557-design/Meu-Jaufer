@@ -50,7 +50,28 @@ nav button{min-width:100px;font-size:13px}
 .item{padding:12px;border-bottom:1px solid #39475a}
 small{color:#aab5c5}
 .hidden{display:none}
-footer{text-align:center;padding:25px;color:#8d9bb0;font-size:12px}
+footer{text-align:center;padding:25px;color:#8d9bb0;font-size:12px}.
+  .painel-indicadores{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin:15px 0;
+}
+.cartao{
+background:#203A70;
+color:white;
+padding:18px;
+border-radius:14px;
+text-align:center;
+}
+.cartao h3{
+margin:5px 0;
+font-size:18px;
+}
+.cartao p{
+font-size:12px;
+color:#c8d7ff;
+}
 </style>
 </head>
 <body>
@@ -74,7 +95,25 @@ footer{text-align:center;padding:25px;color:#8d9bb0;font-size:12px}
 <input id="pergunta" placeholder="Escreve uma tarefa">
 <button onclick="assistente()">Enviar</button>
 </div>
-</section>
+</section> 
+  <div class="painel-indicadores">
+  <div class="cartao">
+    <h3>Tarefas</h3>
+    <p>Organizar actividades</p>
+  </div>
+  <div class="cartao">
+    <h3>Vendas</h3>
+    <p>Controlar vendas</p>
+  </div>
+  <div class="cartao">
+    <h3>Receitas</h3>
+    <p>Controlar entradas</p>
+  </div>
+  <div class="cartao">
+    <h3>Despesas</h3>
+    <p>Controlar saídas</p>
+  </div>
+</div>
 <nav>
 <button onclick="mostrar('inicio')">Início</button>
 <button onclick="mostrar('tarefas')">Tarefas</button>
