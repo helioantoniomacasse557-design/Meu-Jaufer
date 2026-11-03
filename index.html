@@ -45,3 +45,136 @@ button{background:#6366f1;color:white;font-weight:bold}
 button:active{opacity:.8}
 
 nav{display:flex;gap:7px;overflow-x:auto;margin
+:15px 0}
+nav button{min-width:100px;font-size:13px}
+.item{padding:12px;border-bottom:1px solid #39475a}
+small{color:#aab5c5}
+.hidden{display:none}
+footer{text-align:center;padding:25px;color:#8d9bb0;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>MEU JAUFER</h1>
+<p>O teu assistente pessoal e de negócios.</p>
+</header>
+<main>
+<section id="inicio">
+<h2>Bom dia! 👋</h2>
+<p>Vamos organizar o teu dia.</p>
+<div class="stats">
+<div class="card">Tarefas<div class="number" id="totalTarefas">0</div></div>
+<div class="card">Vendas<div class="number" id="totalVendas">0 MT</div></div>
+<div class="card">Receitas<div class="number" id="receitas">0 MT</div></div>
+<div class="card">Despesas<div class="number" id="despesas">0 MT</div></div>
+</div>
+<div class="card">
+<h2>Assistente Jaufer 🤖</h2>
+<p id="mensagem">Estou pronto para ajudar-te!</p>
+<input id="pergunta" placeholder="Escreve uma tarefa">
+<button onclick="assistente()">Enviar</button>
+</div>
+</section>
+<nav>
+<button onclick="mostrar('inicio')">Início</button>
+<button onclick="mostrar('tarefas')">Tarefas</button>
+<button onclick="mostrar('vendas')">Vendas</button>
+<button onclick="mostrar('financas')">Finanças</button>
+</nav>
+<section id="tarefas" class="hidden">
+<h2>Minhas tarefas</h2>
+<div class="card">
+<input id="novaTarefa" placeholder="Nova tarefa">
+<button onclick="adicionarTarefa()">Adicionar tarefa</button>
+<div id="listaTarefas"></div>
+</div>
+</section>
+<section id="vendas" class="hidden">
+<h2>Gestão de vendas</h2>
+<div class="card">
+<input id="produto" placeholder="Produto ou serviço">
+<input id="valorVenda" type="number" placeholder="Valor em MT">
+<button onclick="adicionarVenda()">Registar venda</button>
+<div id="listaVendas"></div>
+</div>
+</section>
+<section id="financas" class="hidden">
+<h2>Minhas finanças</h2>
+<div class="card">
+<input id="valorEntrada" type="number" placeholder="Receita em MT">
+<button onclick="adicionarMovimento('entrada')">Registar receita</button>
+<input id="valorSaida" type="number" placeholder="Despesa em MT">
+<button onclick="adicionarMovimento('saida')">Registar despesa</button>
+<h2>Saldo: <span id="saldo">0 MT</span></h2>
+<div id="movimentos"></div>
+</div>
+</section>
+</main>
+<footer>MEU JAUFER © 2026</footer>
+<script>
+let tarefas=JSON.parse(localStorage.getItem('tarefas')||'[]');
+let vendas=JSON.parse(localStorage.getItem('vendas')||'[]');
+let movimentos=JSON.parse(localStorage.getItem('movimentos')||'[]');
+function guardar(){
+localStorage.setItem('tarefas',JSON.stringify(tarefas));
+localStorage.setItem('vendas',JSON.stringify(vendas));
+localStorage.setItem('movimentos',JSON.stringify(movimentos));
+atualizar();
+}
+function mostrar(id){
+document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+}
+function adicionarTarefa(){
+let v=document.getElementById('novaTarefa').value.trim();
+if(!v)return;
+tarefas.push({texto:v,feito:false});
+document.getElementById('novaTarefa').value='';
+guardar();
+}
+function concluir(i){
+tarefas[i].feito=!tarefas[i].feito;
+guardar();
+}
+function adicionarVenda(){
+let nome=document.getElementById('produto').value.trim();
+let valor=Number(document.getElementById('valorVenda').value);
+if(!nome||valor<=0)return alert('Preenche os dados.');
+vendas.push({nome,valor});
+document.getElementById('produto').value='';
+document.getElementById('valorVenda').value='';
+guardar();
+}
+function adicionarMovimento(tipo){
+let campo=tipo==='entrada'?'valorEntrada':'valorSaida';
+let valor=Number(document.getElementById(campo).value);
+if(valor<=0)return alert('Introduz um valor válido.');
+movimentos.push({tipo,valor});
+document.getElementById(campo).value='';
+guardar();
+}
+function assistente(){
+let v=document.getElementById('pergunta').value.trim();
+if(!v)return;
+tarefas.push({texto:v,feito:false});
+document.getElementById('pergunta').value='';
+document.getElementById('mensagem').textContent='Objetivo registado! Consulta as tuas tarefas.';
+guardar();
+}
+function atualizar(){
+document.getElementById('totalTarefas').textContent=tarefas.filter(t=>!t.feito).length;
+document.getElementById('totalVendas').textContent=vendas.reduce((s,v)=>s+v.valor,0)+' MT';
+let e=movimentos.filter(m=>m.tipo==='entrada').reduce((s,m)=>s+m.valor,0);
+let d=movimentos.filter(m=>m.tipo==='saida').reduce((s,m)=>s+m.valor,0);
+document.getElementById('receitas').textContent=e+' MT';
+document.getElementById('despesas').textContent=d+' MT';
+document.getElementById('saldo').textContent=(e-d)+' MT';
+document.getElementById('listaTarefas').innerHTML=tarefas.map((t,i)=>'<div class="item"><input type="checkbox" style="width:auto" '+(t.feito?'checked':'')+' onchange="concluir('+i+')"> '+t.texto+'</div>').join('');
+document.getElementById('listaVendas').innerHTML=vendas.map(v=>'<div class="item">'+v.nome+' — '+v.valor+' MT</div>').join('');
+document.getElementById('movimentos').innerHTML=movimentos.map(m=>'<div class="item">'+m.tipo+': '+m.valor+' MT</div>').join('');
+}
+atualizar();
+</script>
+</body>
+</html>
+
